@@ -64,7 +64,7 @@
 
 \begin{document}
 
-\title{CMSC 303 Introduction to Theory of Computing, VCU\\Spring 2017, Assignment 3\\Due: Thursday, February 23, 2017 at start of class}
+\title{CMSC 303 Introduction to Theory of Computing, VCU\\Spring 2017, Assignment 3\\Due: Thursday, February 23, 2017\\Matthew Bowers}
 \date{}
 \maketitle
 \noindent Total marks: $66$ marks $+$ $4$ marks bonus $+$ $8$ bonus marks for LaTeX\\
@@ -74,8 +74,12 @@
 \begin{enumerate}
     \item {[12 marks]} This question develops your ability to devise regular expressions, given an explicit definition of a language. For each of the following languages, prove they are regular by giving a regular expression which describes them. Justify your answers.
         \begin{enumerate}
-            \item $L=\set{x\mid x \text{ begins with a $0$ and ends with a $1$}}$.
-            \item $L=\set{x\mid x \text{ contains at least four $0$'s}}$.
+            \item $L=\set{x\mid x \text{ begins with a $0$ and ends with a $1$}}$.\\
+            \\
+            $0\Sigma^*1$\\
+            \item $L=\set{x\mid x \text{ contains at least four $0$'s}}$\\
+            \\
+            $\Sigma^*0\Sigma^*0\Sigma^*0\Sigma^*0\Sigma^*$\\
             \item $L=\set{1, 11, \epsilon}$.
             \item $L=\set{x\mid \text{the length of $x$ is at most $3$}}$.
             \item $L=\set{x\mid x \text{ doesn't contain the substring $110$}}$.
