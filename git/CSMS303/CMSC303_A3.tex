@@ -9,6 +9,8 @@
 \usepackage{enumerate}
 \usepackage{paralist}
 \usepackage{times}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
 
 
 \newtheorem{theorem}{Theorem}
@@ -86,8 +88,12 @@
             \item $L=\set{x\mid \text{the length of $x$ is at most $3$}}$.\\
             \\
             $\Sigma\Sigma\Sigma$\\
-            \item $L=\set{x\mid x \text{ doesn't contain the substring $110$}}$.
-            \item $L=\set{x \mid \abs{x}>0 \text{, i.e. $x$ is non-empty}}$.
+            \item $L=\set{x\mid x \text{ doesn't contain the substring $110$}}$.\\
+            \\
+            This is not done $\neg(\Sigma^*110\Sigma^*)$\\
+            \item $L=\set{x \mid \abs{x}>0 \text{, i.e. $x$ is non-empty}}$.\\
+            \\
+            $\Sigma\Sigma^*$\\
         \end{enumerate}
     \item {[20 marks]} This question tests your understanding of how to translate a regular expression into a finite automaton. Using the construction of Lemma 1.55, construct NFAs recognizing the languages described by the following regular expressions.
         \begin{enumerate}
