@@ -131,7 +131,40 @@
   \hline
 \end{tabular}
         \]
-            Draw the state diagram for $M$, and then apply the construction of Lemma 1.60 to obtain a regular expression describing $L(M)$.
+            Draw the state diagram for $M$, and then apply the construction of Lemma 1.60 to obtain a regular expression describing $L(M)$.\\
+            \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid, auto]
+            \node [state, initial, accepting] (q_1) {$q_1$};
+            \node [state] [right =of q_1] (q_2) {$q_2$};
+            \node [state, accepting] [below =of q_2] (q_3) {$q_3$};
+            \path[->]
+            	(q_1) edge node {0,1} (q_2)
+            	(q_2) edge [bend right=20] node [swap] {1} (q_3)
+            	(q_2) edge [loop above] node {0} ()
+            	(q_3) edge node {0} (q_1)
+            	(q_3) edge [bend right= 20] node [swap] {1} (q_2);
+            \end{tikzpicture}
+\\
+Transform into a GNFA.\\
+            \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid, auto]
+            \node [state, initial] (q_s) {$q_{\text{start}}$};
+            \node [state] [right=of q_s] (q_1) {$q_1$};
+            \node [state] [right =of q_1] (q_2) {$q_2$};
+            \node [state] [below =of q_2] (q_3) {$q_3$};
+            \node [state, accepting] [right=of q_2] (q_e) {$q_{\text{end}}$};
+            \path[->]
+            	(q_s) edge node {$\epsilon$} (q_1)
+            	(q_1) edge node {0,1} (q_2)
+            		edge [bend left= 70] node {$\epsilon$} (q_e)
+            		edge [loop above] node {$\emptyset$} ()
+            		edge [bend right=45] node [swap] {$\emptyset$} (q_3)
+            	(q_2) edge [bend right=10] node [swap] {1} (q_3)
+            		edge [bend right =45] node [swap] {$\emptyset$} (q_1)
+            	(q_2) edge [loop above] node {0} ()
+            	(q_3) edge node {0} (q_1)
+            	(q_3) edge [bend right= 10] node [swap] {1} (q_2)
+            		edge [loop below] node {$\emptyset$} ()
+            		edge node {$\epsilon$} (q_e);
+            \end{tikzpicture}
     \item {[15 marks]} This question allows you to practice proving a language is non-regular via the Pumping Lemma. Using the Pumping Lemma (Theorem 1.70), give formal proofs that the following languages are \emph{not} regular:
         \begin{enumerate}
             \item $L=\set{www\mid w\in\set{0,1}^*}$.
