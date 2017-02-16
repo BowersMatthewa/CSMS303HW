@@ -10,7 +10,7 @@
 \usepackage{paralist}
 \usepackage{times}
 \usepackage{tikz}
-\usetikzlibrary{arrows,automata}
+\usetikzlibrary{automata, positioning}
 
 
 \newtheorem{theorem}{Theorem}
@@ -97,8 +97,27 @@
         \end{enumerate}
     \item {[20 marks]} This question tests your understanding of how to translate a regular expression into a finite automaton. Using the construction of Lemma 1.55, construct NFAs recognizing the languages described by the following regular expressions.
         \begin{enumerate}
-            \item {[5 marks]} $R=\emptyset^*$.
-            \item {[15 marks]} $R=(0\cup 1)^*111(0\cup 1)^*$.
+            \item {[5 marks]} $R=\emptyset^*$.\\
+            \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+		\node[state,initial, accepting] (q_0)   {$q_0$}; 
+		\node[state] (q_1) [right=of q_0] {$q_1$};
+		\path[->]
+			(q_0) edge  node {0, 1} (q_1)
+			(q_1) edge [loop right] node {0, 1} ();
+   	\end{tikzpicture}
+            \item {[15 marks]} $R=(0\cup 1)^*111(0\cup 1)^*$.\\
+            \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+		\node[state,initial] (q_0)   {$q_0$}; 
+		\node[state] (q_1) [right=of q_0] {$q_1$};
+		\node[state] (q_2) [right=of q_1] {$q_2$};
+		\node[state, accepting] (q_3) [right=of q_2] {$q_3$};
+		\path[->]
+			(q_0) edge [loop above] node {0, 1, $\epsilon$} ()
+			(q_0) edge node {1} (q_1)
+			(q_1) edge node {1} (q_2)
+			(q_2) edge node {1} (q_3)
+			(q_3) edge [loop above] node {0, 1} ();
+   	\end{tikzpicture}
         \end{enumerate}
     \item {[15 marks]} This question tests your understanding of how to translate a finite automaton into a regular expression. Consider DFA $M=(Q,\Sigma,\delta,q,F)$ such that $Q=\set{q_1,q_2,q_3}$, $q=q_1$, $F=\set{q_1,q_3}$, and $\delta$ is given by:
                 \[
