@@ -153,17 +153,49 @@ Transform into a GNFA.\\
             \node [state, accepting] [right=of q_2] (q_e) {$q_{\text{end}}$};
             \path[->]
             	(q_s) edge node {$\epsilon$} (q_1)
+            		edge [bend right=45] node [swap] {$\emptyset$} (q_2)
+            		edge [bend right=45] node [swap] {$\emptyset$} (q_3)
+            		edge [bend left=50] node {$\emptyset$} (q_e)
             	(q_1) edge node {0,1} (q_2)
             		edge [bend left= 70] node {$\epsilon$} (q_e)
             		edge [loop above] node {$\emptyset$} ()
             		edge [bend right=45] node [swap] {$\emptyset$} (q_3)
             	(q_2) edge [bend right=10] node [swap] {1} (q_3)
             		edge [bend right =45] node [swap] {$\emptyset$} (q_1)
+            		edge node {$\emptyset$} (q_e)
             	(q_2) edge [loop above] node {0} ()
             	(q_3) edge node {0} (q_1)
             	(q_3) edge [bend right= 10] node [swap] {1} (q_2)
             		edge [loop below] node {$\emptyset$} ()
             		edge node {$\epsilon$} (q_e);
+            \end{tikzpicture}
+            \\
+            \begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid, auto]
+            \node [state, initial] (q_s) {$q_{\text{start}}$};
+            \node [state] [right =of q_s] (q_2) {$q_2$};
+            \node [state] [below =of q_2] (q_3) {$q_3$};
+            \node [state, accepting] [right=of q_2] (q_e) {$q_{\text{end}}$};
+            \path[->]
+            	(q_s) edge node {$0\cup1$} (q_2)
+            		edge [bend left=65] node {$\epsilon$} (q_e)
+            		edge node [swap] {$\emptyset$} (q_3)
+            	(q_2) edge [bend right=30] node [swap] {1} (q_3)
+            		edge node {$\emptyset$} (q_e)
+            		edge [loop above] node {0} ()
+            	(q_3) edge node [sloped, anchor=center, above] {$00\cup01\cup1$} (q_2)
+            		edge [loop below] node {$\emptyset$} ()
+            		edge node {$0\cup\epsilon$} (q_e);
+            \end{tikzpicture}
+            \\
+            \begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid, auto]
+            \node [state, initial] (q_s) {$q_{\text{start}}$};
+            \node [state] [right =of q_s] (q_3) {$q_3$};
+            \node [state, accepting] [right=of q_3] (q_e) {$q_{\text{end}}$};
+            \path[->]
+            	(q_s) edge [bend left=65] node {$\epsilon$} (q_e)
+            		edge node [swap] {$00^*1\cup10^*1$} (q_3)
+            	(q_3) edge [loop below] node {$000^*1\cup010^*1\cup10^*1$} ()
+            		edge node {$0\cup\epsilon$} (q_e);
             \end{tikzpicture}
     \item {[15 marks]} This question allows you to practice proving a language is non-regular via the Pumping Lemma. Using the Pumping Lemma (Theorem 1.70), give formal proofs that the following languages are \emph{not} regular:
         \begin{enumerate}
