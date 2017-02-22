@@ -145,6 +145,7 @@
             \end{tikzpicture}
 \\
 Transform into a GNFA.\\
+	Step 1.
             \begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid, auto]
             \node [state, initial] (q_s) {$q_{\text{start}}$};
             \node [state] [right=of q_s] (q_1) {$q_1$};
@@ -169,7 +170,7 @@ Transform into a GNFA.\\
             		edge [loop below] node {$\emptyset$} ()
             		edge node {$\epsilon$} (q_e);
             \end{tikzpicture}
-            \\
+	\\ Step 2
             \begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid, auto]
             \node [state, initial] (q_s) {$q_{\text{start}}$};
             \node [state] [right =of q_s] (q_2) {$q_2$};
@@ -182,26 +183,55 @@ Transform into a GNFA.\\
             	(q_2) edge [bend right=30] node [swap] {1} (q_3)
             		edge node {$\emptyset$} (q_e)
             		edge [loop above] node {0} ()
-            	(q_3) edge node [sloped, anchor=center, above] {$00\cup01\cup1$} (q_2)
+            	(q_3) edge node [sloped, anchor=center, above] {$0\Sigma\cup1$} (q_2)
             		edge [loop below] node {$\emptyset$} ()
             		edge node {$0\cup\epsilon$} (q_e);
             \end{tikzpicture}
-            \\
+	\\ Step 3
             \begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid, auto]
             \node [state, initial] (q_s) {$q_{\text{start}}$};
             \node [state] [right =of q_s] (q_3) {$q_3$};
             \node [state, accepting] [right=of q_3] (q_e) {$q_{\text{end}}$};
             \path[->]
             	(q_s) edge [bend left=65] node {$\epsilon$} (q_e)
-            		edge node [swap] {$00^*1\cup10^*1$} (q_3)
-            	(q_3) edge [loop below] node {$000^*1\cup010^*1\cup10^*1$} ()
+            		edge node [swap] {$\Sigma0^*1$} (q_3)
+            	(q_3) edge [loop below] node {$0\Sigma0^*1\cup10^*1$} ()
             		edge node {$0\cup\epsilon$} (q_e);
+            \end{tikzpicture}
+	\\ Step 4
+            \begin{tikzpicture}[shorten >=1pt,node distance=4cm,on grid, auto]
+            \node [state, initial] (q_s) {$q_{\text{start}}$};
+            \node [state, accepting] [right=of q_s] (q_e) {$q_{\text{end}}$};
+            \path[->]
+            	(q_s) edge [bend left] node {$(\Sigma0^*1)(0\Sigma0^*1\cup10^*1)^*(0\cup\epsilon)\cup\epsilon$} (q_e); 		
             \end{tikzpicture}
     \item {[15 marks]} This question allows you to practice proving a language is non-regular via the Pumping Lemma. Using the Pumping Lemma (Theorem 1.70), give formal proofs that the following languages are \emph{not} regular:
         \begin{enumerate}
-            \item $L=\set{www\mid w\in\set{0,1}^*}$.
+            \item $L=\set{www\mid w\in\set{0,1}^*}$.\\
+            \begin{proof}
+            For a proof by contradiction assume L is a regular language.\\
+            This implies that $\exists$ a pumping length p.\\
+            Choose $s = nnn$ s.t. $|n| = p$\\
+            
+            \end{proof}
             \item $L=\set{1^n0^m1^n\mid m\text{, }n\geq 0}$.
-            \item $L=\set{x\mid x\in\set{0,1}^*\text{ is not a palindrome}}$. Recall a palindrome is a string that looks the same forwards and backwards. Examples of palindromes are ``madam'' and ``racecar''.
+            \begin{proof}
+            For a proof by contradiction assume L is a regular language.\\
+            This implies that $\exists$ a pumping length p.\\
+            Choose $s =1^p0^m1^p$\\
+            $s\in L$\\
+            $|s|=2p+m \geq p$\\
+            The conditions for the pumping are met\\
+            $\exists x, y, z$ s.t. $s=xyz$ and $|xy|\leq p \therefore$ every character in x and y is a 1 and y 
+            contains at least one 1.
+            $xy^2z = 1^(p')0^m1^p$ where $p'\geq p \therefore xy^2z \notin L$ This is a contradiction. 
+            \end{proof}
+            \item $L=\set{x\mid x\in\set{0,1}^*\text{ is not a palindrome}}$. Recall a palindrome is a string that looks the same forwards and backwards. Examples of palindromes are ``madam'' and ``racecar''.\\
+            \begin{proof}
+            For a proof by contradiction assume L is a regular language.\\
+            This implies that $\exists$ a pumping length p.\\
+            Choose $s = $
+            \end{proof}
         \end{enumerate}
     \item  {[$4$ marks $+$ $4$ marks bonus]} This question reveals important subtleties of the Pumping Lemma. Let $B=\set{0^kx0^k \mid k\geq 1\text{ and } x\in\Sigma^*}$.
                 \begin{enumerate}
@@ -209,8 +239,11 @@ Transform into a GNFA.\\
 
                     Assume $B_2$ is regular, and let $p$ be the pumping length. Consider string $s=0^p10^p\in B_2$, and decompose it as $s=xyz$ with $x=\epsilon$, $y=0^p$, $z=10^p$. Then, pumping $s$ down by setting $i=0$ yields string $s'=xy^iz=xy^0z=10^p\not \in B_2$. Hence, by the Pumping Lemma, we have a contradiction. We conclude that $B_2$ is not regular.
 
-                    The question is: What is wrong with this proof?
-                \item {[4 marks, bonus]} Prove that, in fact, $B$ is regular.
+                    The question is: What is wrong with this proof?\\
+                    \\
+                    The proof must be for any string s of length greater than p. This proof is only for the subset of strings with a 1 in the center.
+                \item {[4 marks, bonus]} Prove that, in fact, $B$ is regular.\\
+                This language can be expressed as $0\Sigma^*0$ Because x can be any number of any character extra zeros before or after can be absorbed into the sigma. 
             \end{enumerate}
 \end{enumerate}
 \end{document}
