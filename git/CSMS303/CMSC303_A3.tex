@@ -69,6 +69,7 @@
 \title{CMSC 303 Introduction to Theory of Computing, VCU\\Spring 2017, Assignment 3\\Due: Thursday, February 23, 2017\\Matthew Bowers}
 \date{}
 \maketitle
+\noindent Worked with Samuel Yound and Sean McDermott
 \noindent Total marks: $66$ marks $+$ $4$ marks bonus $+$ $8$ bonus marks for LaTeX\\
 
 \noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$.
@@ -248,9 +249,9 @@ Transform into a GNFA.\\
 
                     Assume $B_2$ is regular, and let $p$ be the pumping length. Consider string $s=0^p10^p\in B_2$, and decompose it as $s=xyz$ with $x=\epsilon$, $y=0^p$, $z=10^p$. Then, pumping $s$ down by setting $i=0$ yields string $s'=xy^iz=xy^0z=10^p\not \in B_2$. Hence, by the Pumping Lemma, we have a contradiction. We conclude that $B_2$ is not regular.
 
-                    The question is: What is wrong with this proof?\\
+                 	The question is: What is wrong with this proof?\\
                     \\
-                    The proof must be for any string s of length greater than p. This proof is only for the subset of strings with a 1 in the center.
+                    The pumping lemma states that some x, y, z must exist. This proof has shown that this particular choice of x, y, and z does not work, but it does not prove that there is no possible choice.
                 \item {[4 marks, bonus]} Prove that, in fact, $B$ is regular.\\
                 This language can be expressed as $0\Sigma^*0$ Because x can be any number of any character extra zeros before or after can be absorbed into the sigma. 
             \end{enumerate}
