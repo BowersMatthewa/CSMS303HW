@@ -1,0 +1,116 @@
+%JULIA HEADER
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{times}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\myparagraph}[1]{\paragraph{#1.}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\epssdp}{\varepsilon_{\rm sdp}}
+\newcommand{\bra}[1]{\langle #1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\braket}[2]{\langle #1|#2\rangle}
+\newcommand{\ketbra}[2]{\ket{#1}{\bra{#2}}}
+
+\newcommand{\C}{C}
+\newcommand{\Tr}{Tr} %CHECK
+\newcommand{\Id}{Id} %CHECK
+\newcommand{\Exs}[2]{E_{#1}[#2]} %CHECK
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+\newcommand{\trace}{{\rm Tr}}
+
+\newcommand{\norm}[1]{\left\|\,#1\,\right\|}       % norm
+\newcommand{\onorm}[1]{\norm{#1}_{\mathrm{1}}}      % Euclidean norm for vectors
+\newcommand{\enorm}[1]{\norm{#1}_{\mathrm{2}}}      % Euclidean norm for vectors
+\newcommand{\trnorm}[1]{\norm{#1}_{\mathrm {tr}}}  % trace norm
+\newcommand{\fnorm}[1]{\norm{#1}_{\mathrm {F}}}    % frobenius norm
+\newcommand{\snorm}[1]{\norm{#1}_{\mathrm {\infty}}}    % spectral norm
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+
+
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+
+%\def\ket#1{ | #1 \rangle}
+%\def\bra#1{{\langle #1 | }}
+%\newcommand{\ketbra}[2]{\ket{#1}\!\bra{#2}}        % outer product
+%\newcommand{\braket}[2]{\mbox{$\langle #1  | #2 \rangle$}}
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\dens}{D(\spa{A}\otimes\spa{B})}
+\newcommand{\unitaries}{U(\spa{A}\otimes\spa{B})}
+
+
+\bibliographystyle{alpha}
+
+\begin{document}
+
+\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2015, Assignment 5\\Due: Tuesday, March 28, 2015 in class}
+\date{}
+\maketitle
+\vspace{-5mm}
+\noindent Total marks: $38$ marks + $4$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
+
+\noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$.
+%\section{Questions}
+\begin{enumerate}
+    \item {[6 marks]} This question asks you to examine the formal definitions of a TM and related concepts closely. Based on these definitions, answer the following.
+        \begin{enumerate}
+            \item A \emph{configuration} of a Turing Machine (TM) consists of three things. What are these three things?
+            \item Can a Turing machine ever write the blank symbol $\sqcup$ on its tape?
+            \item Can the tape alphabet $\Gamma$ be the same as the input alphabet $\Sigma$?
+            \item Can a Turing machine's head \emph{ever} be in the same location in two successive steps?
+            \item Can a TM contain just a single state?
+            \item What is the difference between a decidable language and a Turing-recognizable language?
+        \end{enumerate}
+    \item {[8 marks]} This question gets you to practice describing TM's at a semi-low level. Give an implementation-level description of a TM that decides the language \[L=\set{x\mid x\text{ contains twice as many 0s as 1s}}.\] By \emph{implementation-level description}, we mean a description similar to Example 3.11 in the text (i.e. describe how the machine's head would move around, whether the head might mark certain tape cells, etc\ldots. Please do \emph{not} draw a full state diagram (for your sake and for ours)).
+
+    \item {[9 marks]} This question investigates a variant of our standard TM model from class. Our standard model included a tape which was infinite in one direction only. Consider now a TM whose tape is infinite in \emph{both} directions (i.e. you can move left or right infinitely many spaces on the tape). We call this a TM with \emph{doubly infinite tape}.
+        \begin{enumerate}
+            \item {[3 marks]} Show that a TM with doubly infinite tape can simulate a standard TM.
+            \item {[5 marks]} Show that a standard TM can simulate a TM with doubly infinite tape.
+            \item {[1 mark]} What does this imply about the sets of languages recognized by both models?
+        \end{enumerate}
+    \item {[10 marks]} This question studies closure properties of the decidable and Turing-recognizable languages.
+        \begin{enumerate}
+            %\item {[5 marks]} Show that the set of decidable languages is closed under complement.
+            \item {[5 marks]} Show that the set of decidable languages is closed under concatenation.
+            \item {[5 marks]} Show that the set of Turing-recognizable languages is closed under concatenation. (Hint: This is trickier than part (a) because if a (deterministic) Turing machine decides to split an input string $x$ as $x=yz$ and check if $y\in L_1$ and $z\in L_2$, i.e. to check if $x\in L_1\circ L_2$, then running the \emph{recognizer} for $L_1$ on $y$ (say) may result in an infinite loop if $y\not\in L_1$.)
+        \end{enumerate}
+
+    \item {[5 marks]} This question allows you to explore variants of the computational models we've defined in class. Let a $k$-PDA be a pushdown automaton that has $k$ stacks. In this sense, a $0$-PDA is an NFA and a $1$-PDA is a conventional PDA. We know that $1$-PDAs are more powerful (recognize a larger class of languages) than $0$-PDAs. Show that $2$-PDAs are more powerful than $1$-PDAs. (Hint: Recall from A4 that the language $L=\set{a^nb^nc^n\mid n\geq 0}$ is not context-free.)
+
+\end{enumerate}
+\end{document}
