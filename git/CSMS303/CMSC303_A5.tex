@@ -74,7 +74,7 @@
 
 
 \bibliographystyle{alpha}
-
+\author{Matthew Bowers}
 \begin{document}
 
 \title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2015, Assignment 5\\Due: Tuesday, March 28, 2015 in class}
@@ -88,9 +88,15 @@
 \begin{enumerate}
     \item {[6 marks]} This question asks you to examine the formal definitions of a TM and related concepts closely. Based on these definitions, answer the following.
         \begin{enumerate}
-            \item A \emph{configuration} of a Turing Machine (TM) consists of three things. What are these three things?
-            \item Can a Turing machine ever write the blank symbol $\sqcup$ on its tape?
-            \item Can the tape alphabet $\Gamma$ be the same as the input alphabet $\Sigma$?
+            \item A \emph{configuration} of a Turing Machine (TM) consists of three things. What are these three things? \\
+            \begin{enumerate}
+            \item The tape with the input string writen on it
+            \item A starting location of the head
+            \item The starting state
+            \end{enumerate}
+            \item Can a Turing machine ever write the blank symbol $\sqcup$ on its tape? \\
+            No the blank marks the end of the useful bit of the tape
+            \item Can the tape alphabet $\Gamma$ be the same as the input alphabet $\Sigma$? No the tape alphabet must include at least $\sqcup$ which cannot be in the input alphabet. It is also useful to have additional characters available to mark sections of the tape.
             \item Can a Turing machine's head \emph{ever} be in the same location in two successive steps?
             \item Can a TM contain just a single state?
             \item What is the difference between a decidable language and a Turing-recognizable language?
