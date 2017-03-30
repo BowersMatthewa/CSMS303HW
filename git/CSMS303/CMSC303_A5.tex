@@ -77,7 +77,7 @@
 \author{Matthew Bowers}
 \begin{document}
 
-\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2015, Assignment 5\\Due: Tuesday, March 28, 2015 in class}
+\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2015, Assignment 5\\Due: Thursday, March 30, 2015 in class}
 \date{}
 \maketitle
 \vspace{-5mm}
@@ -90,33 +90,53 @@
         \begin{enumerate}
             \item A \emph{configuration} of a Turing Machine (TM) consists of three things. What are these three things? \\
             \begin{enumerate}
-            \item The tape with the input string writen on it
+            \item The tape with the input string written on it
             \item A starting location of the head
             \item The starting state
             \end{enumerate}
             \item Can a Turing machine ever write the blank symbol $\sqcup$ on its tape? \\
             No the blank marks the end of the useful bit of the tape
             \item Can the tape alphabet $\Gamma$ be the same as the input alphabet $\Sigma$? No the tape alphabet must include at least $\sqcup$ which cannot be in the input alphabet. It is also useful to have additional characters available to mark sections of the tape.
-            \item Can a Turing machine's head \emph{ever} be in the same location in two successive steps?
-            \item Can a TM contain just a single state?
-            \item What is the difference between a decidable language and a Turing-recognizable language?
+            \item Can a Turing machine's head \emph{ever} be in the same location in two successive steps?\\
+            Strictly no. This behavior can be simulated by having the head read and write nothing and move back to where it was, so for all intents and purposes it can stay.
+            \item Can a TM contain just a single state?\\
+            No the machine must have at least an accept, reject, and some other state to keep running or operation would terminate at accept or reject
+            \item What is the difference between a decidable language and a Turing-recognizable language?\\
+            If a language is decidable its TM will terminate one way or the other. If a language is only recognizable non-members may cause the machine to loop forever.
         \end{enumerate}
-    \item {[8 marks]} This question gets you to practice describing TM's at a semi-low level. Give an implementation-level description of a TM that decides the language \[L=\set{x\mid x\text{ contains twice as many 0s as 1s}}.\] By \emph{implementation-level description}, we mean a description similar to Example 3.11 in the text (i.e. describe how the machine's head would move around, whether the head might mark certain tape cells, etc\ldots. Please do \emph{not} draw a full state diagram (for your sake and for ours)).
+    \item {[8 marks]} This question gets you to practice describing TM's at a semi-low level. Give an implementation-level description of a TM that decides the language \[L=\set{x\mid x\text{ contains twice as many 0s as 1s}}.\] By \emph{implementation-level description}, we mean a description similar to Example 3.11 in the text (i.e. describe how the machine's head would move around, whether the head might mark certain tape cells, etc\ldots. Please do \emph{not} draw a full state diagram (for your sake and for ours)).\\
+    
+    \begin{enumerate}
+    \item Sweep from left to right
+    \item if tape is empty accept 
+    \item reset head to start
+    \item Sweep from left to right
+    \item replace a 1 with X if end is reached reject
+    \item reset head 
+    \item Sweep and replace two 0's with an X
+    \item if end is reached before marking 2 X's reject
+    \item Sweep left to right if a 1 is found go to 3 else
+    \item Sweep left to right if a 0 is found reject
+   	\item If all symbols are X accept.
+    \end{enumerate}
 
     \item {[9 marks]} This question investigates a variant of our standard TM model from class. Our standard model included a tape which was infinite in one direction only. Consider now a TM whose tape is infinite in \emph{both} directions (i.e. you can move left or right infinitely many spaces on the tape). We call this a TM with \emph{doubly infinite tape}.
         \begin{enumerate}
-            \item {[3 marks]} Show that a TM with doubly infinite tape can simulate a standard TM.
-            \item {[5 marks]} Show that a standard TM can simulate a TM with doubly infinite tape.
-            \item {[1 mark]} What does this imply about the sets of languages recognized by both models?
+            \item {[3 marks]} Show that a TM with doubly infinite tape can simulate a standard TM.\\ Choose a point on the doubly infinite tape and mark it with a \#. Copy the input of the single tape one the double tape beginning to the right of the \#. Treat the \# exactly as you would treat the left edge of the standard tape.
+
+            \item {[5 marks]} Show that a standard TM can simulate a TM with doubly infinite tape. \\
+pick a point on our doubly infinite tape. Copy all symbols to the left of this mark onto a singly infinite tape T1 in reverse order. Copy all sybols right of the symbol onto a second singly infinte tape T2. A left move on of left part of the tape becomes a right move on T1. A right move on the right side of the tape becomes a right move on T2. Only one tape will be active at a time so the inactive head will stay at a \# placed at the first position on each tape. A move across the midpoint changes which tape is active. It has already been shown that k-tape TM's can be simulate by standard TM's.
+            \item {[1 mark]} What does this imply about the sets of languages recognized by both models? \\ Neither machine is more powerful so the sets are equivilant. 
         \end{enumerate}
     \item {[10 marks]} This question studies closure properties of the decidable and Turing-recognizable languages.
         \begin{enumerate}
             %\item {[5 marks]} Show that the set of decidable languages is closed under complement.
-            \item {[5 marks]} Show that the set of decidable languages is closed under concatenation.
-            \item {[5 marks]} Show that the set of Turing-recognizable languages is closed under concatenation. (Hint: This is trickier than part (a) because if a (deterministic) Turing machine decides to split an input string $x$ as $x=yz$ and check if $y\in L_1$ and $z\in L_2$, i.e. to check if $x\in L_1\circ L_2$, then running the \emph{recognizer} for $L_1$ on $y$ (say) may result in an infinite loop if $y\not\in L_1$.)
+            \item {[5 marks]} Show that the set of decidable languages is closed under concatenation. \\ Proof by construction. Take two TM's M1 and M2 which decide our two languages. Run the input on M1. After each step of M1 the last n-1 characters from the input to M2 and run it. Our combined machine will accept only if both machines get to accept.
+            \item {[5 marks]} Show that the set of Turing-recognizable languages is closed under concatenation. (Hint: This is trickier than part (a) because if a (deterministic) Turing machine decides to split an input string $x$ as $x=yz$ and check if $y\in L_1$ and $z\in L_2$, i.e. to check if $x\in L_1\circ L_2$, then running the \emph{recognizer} for $L_1$ on $y$ (say) may result in an infinite loop if $y\not\in L_1$.)\\
+        Begin with a simular set up to part a. If M1 gets to accept send the remaining input to M2. Each step of M2 causes a new M2 to be spawned which accepts the remaining input from its predicessor. This simulates cutting the input at every place beyond an initial string accepted by M1.     
         \end{enumerate}
 
-    \item {[5 marks]} This question allows you to explore variants of the computational models we've defined in class. Let a $k$-PDA be a pushdown automaton that has $k$ stacks. In this sense, a $0$-PDA is an NFA and a $1$-PDA is a conventional PDA. We know that $1$-PDAs are more powerful (recognize a larger class of languages) than $0$-PDAs. Show that $2$-PDAs are more powerful than $1$-PDAs. (Hint: Recall from A4 that the language $L=\set{a^nb^nc^n\mid n\geq 0}$ is not context-free.)
-
+    \item {[5 marks]} This question allows you to explore variants of the computational models we've defined in class. Let a $k$-PDA be a pushdown automaton that has $k$ stacks. In this sense, a $0$-PDA is an NFA and a $1$-PDA is a conventional PDA. We know that $1$-PDAs are more powerful (recognize a larger class of languages) than $0$-PDAs. Show that $2$-PDAs are more powerful than $1$-PDAs. (Hint: Recall from A4 that the language $L=\set{a^nb^nc^n\mid n\geq 0}$ is not context-free.)\\
+    To show that a 2-PDA is more powerful we will construct one which will recognize $L$. Let M be a 2-PDA with stacks $s1$ and $s2$. From $q_start$ to $q_a$ push \$ to $s1$. Loop on $q_a$ popping nothing and pushing $a$ onto $s1$. On a read of b transition to $q_b1$ pop an $a$ from $s1$ and push a \$ to $s2$. Epsilon transition to $q_b2$ push $b$ to $s2$ Loop on $q_b2$ popping a's and pushing b's. On a read of $c$ you must pop \$ from $s1$ and $b$ from $s2$ epsilon to $q_accept$ when pop \$ from $s2$.  
 \end{enumerate}
 \end{document}
