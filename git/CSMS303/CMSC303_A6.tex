@@ -112,20 +112,93 @@
             A computable function is a mapping from a string to a string which is Turing decidable.
             \item {[3 marks]} Suppose $A\leq_m B$ for languages $A$ and $B$. Please answer each of the following with a brief explanation.
                 \begin{enumerate}
-                    \item If $B$ is decidable, is $A$ decidable?
-                    \item If $A$ is undecidable, is $B$ undecidable?
-                    \item If $B$ is undecidable, is $A$ undecidable?
+                    \item If $B$ is decidable, is $A$ decidable? Yes because $B$ is decidable and $A$ can be mapped to $B$ $A$ must also be decidable.
+                    \item If $A$ is undecidable, is $B$ undecidable? Yes. Since $A$ reduces to $B$ if $B$ were decidable $A$ would be as well. Since we know both that $A$ reduces to $B$ and that $A$ is undecidable, it must be that $B$ is also undecidable.
+                    \item If $B$ is undecidable, is $A$ undecidable? Not necessarily. It is possible that $A$ is actually decidable by some reduction just not this one. 
                 \end{enumerate}
 
         \end{enumerate}
     \item {[40 marks]} Prove using reductions that the following languages are undecidable.
 
     \begin{enumerate}
-    \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.
-            \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }\set{000,111}\subseteq L(M)}$.
-            \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
+
+
+    	\item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.  
+    	\begin{proof}
+    	Assume L is decidable. 
+    	Let TM $R$ decide L. Construct TM $S$ with $R$ as a subprocess to show that it can be used to decide $A_{TM}$\\
+    	Design TM $M_x =$ on input $x$
+    	\begin{enumerate}
+    		\item Run $M$ on $w$ if $M$ accepts, accept
+    		\item Otherwise reject
+    	\end{enumerate}
+    	$S = $ "on input $<M, w>$ 
+    	\begin{enumerate}
+    		\item Construct $M_x$ as above
+    		\item Run $R$ on $<M_x>$
+    		\item if $R$ accepts accept, if $R$ rejects reject"
+    	\end{enumerate}
+    	\end{proof}
+
+
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }\set{000,111}\subseteq L(M)}$.
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item if $x$ has the form $0^n1^n n\geq 1$ accept. (This makes $L(M_x)$ not contain $000$ or $111$ so R will reject)
+        				\item otherwise run $M$ on input $w$ if $M$ accepts, accept.(This adds all other strings including $000$ and $111$ to $L(M_x)$"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
+
+
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item if $x$ has odd parity reject. (This ensures that $L(M_x)$ contains no strings with odd parity)
+        				\item otherwise run $M$ on input $w$ if $M$ accepts, accept.(This adds strings of even parity to $M_x$ only if $M$ accecpts $w$. If $M$ rejects $w$ then $L(M_x) = \emptyset$"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
         \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
-        \item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item simulate a PDA which detects palandromes and feed it input x. If the PDA accepts run $M$ on input $w$ if $M$ accepts, accept. (This ensures that $L(M_x)$ contains only palandromes which are their own reverse so $R$ will certainly accept.)
+        				\item otherwise reject.(This sets $L(M_x) = \emptyset$ so $R$ will reject it.)"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
+        
+        \item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.\\
+        $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings which causes it to attempt to move its head off of the left side of the tape}}$
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$\\
+        $S =$ "on inpute $<M, w>$
+        \begin{enumerate}
+        	\item Construct TM $M_x$\\
+        		$M_x =$ "on input x
+        		\begin{enumerate}
+        			\item Run $M$ on $w$ if $M$ accepts enter a loop which moves the head left forever
+        			\item Otherwise move head right forever
+        		\end{enumerate}
+        	\item Run $R$ on $M_x$ accept if $R$ accepts.
+        \end{enumerate}
     \end{enumerate}
  \end{enumerate}
 \end{document}
