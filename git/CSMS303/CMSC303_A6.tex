@@ -1,0 +1,204 @@
+
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb,latexsym}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{times}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{alg}[theorem]{Algorithm}
+
+\newcommand{\myparagraph}[1]{\paragraph{#1.}}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\epssdp}{\varepsilon_{\rm sdp}}
+
+\newcommand{\C}{C}
+\newcommand{\Tr}{Tr} %CHECK
+\newcommand{\Id}{Id} %CHECK
+\newcommand{\Exs}[2]{E_{#1}[#2]} %CHECK
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+
+\newcommand{\norm}[1]{\left\|\,#1\,\right\|}       % norm
+\newcommand{\onorm}[1]{\norm{#1}_{\mathrm{1}}}      % Euclidean norm for vectors
+\newcommand{\enorm}[1]{\norm{#1}_{\mathrm{2}}}      % Euclidean norm for vectors
+\newcommand{\trnorm}[1]{\norm{#1}_{\mathrm {tr}}}  % trace norm
+\newcommand{\fnorm}[1]{\norm{#1}_{\mathrm {F}}}    % frobenius norm
+\newcommand{\snorm}[1]{\norm{#1}_{\mathrm {\infty}}}    % spectral norm
+
+\newcommand{\set}[1]{{\left\{#1\right\}}}    % braces for set notation
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+
+\newcommand{\complex}{{\mathbb C}}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\nats}{{\mathbb N}}
+\newcommand{\rats}{{\mathbb Q}}
+
+\newcommand{\proj}[1]{\mbox{$|#1\rangle \!\langle #1 |$}}
+\newcommand{\enc}[1]{\left<#1\right>}
+
+\newcommand{\spa}[1]{\mathcal{#1}}
+\newcommand{\dens}{D(\spa{A}\otimes\spa{B})}
+\newcommand{\unitaries}{U(\spa{A}\otimes\spa{B})}
+
+\bibliographystyle{alpha}
+\author{Matthew Bowers}
+
+\begin{document}
+
+\title{CMSC 303 Introduction to Theory of Computation, VCU\\Spring 2017, Assignment 6\\Due: Thursday, April 14, 2017 in class}
+\date{}
+\maketitle
+
+\vspace{-5mm}
+\noindent Total marks: $59$ marks + $6$ marks bonus for typing your solutions in LaTeX.\vspace{2mm}\\
+
+\noindent Unless otherwise noted, the alphabet for all questions below is assumed to be $\Sigma=\set{0,1}$. This assignment will get you primarily to practice reductions in the context of decidability.
+
+\begin{enumerate}
+    \item {[10 marks]} We begin with some mathematics regarding uncountability. Let $\nats=\set{0, 1,2,3,\ldots}$ denote the set of natural numbers.
+    \begin{enumerate}
+        \item {[5 marks]}  Prove that the set of integers $\ints=\set{\ldots,-3,-2,-1,0,1,2,3\ldots}$ has the same size as $\nats$ by giving a bijection between $\ints$ and $\nats$.
+        First list all of the integers beginning with 0 and then alternating between positive and negative like this $\{0, 1, -1, 2, -2, 3, -3...\}$ create the assignment $1 \rightarrow 0, 2 \rightarrow 1, 3 \rightarrow -1...$ in this way every integer will be assigned to exactly 1 natural number and every natural number will be assigned to exactly one integer.
+        \item {[5 marks]}  Let $B$ denote the set of all infinite sequences over $\set{0,1}$. Show that $B$ is uncountable using a proof by diagonalization.
+        \begin{proof}
+        	For the proof we will assume that $B$ is countable then construct a string $x$ which has not been counted thus showing that $B$ is in fact uncountable. 
+        	Begin by listing out every possible string $w \in B$ contruct x in for following way: \\
+        	$x_1, x_2,...,x_n $ etc will indicate the 1st, 2nd, and nth character in $x$. \\
+        	$w_1, w_2,...,w_n $ will indicate the 1st, 2nd, and nth string in the listing of all strings in $B$.\\
+        	$w_{n_i}$ will indicate the ith character in the nth string of $B$
+        	choose $x_1$ s.t. $x_1 \neq w_{1_1}$ continue this so that $x_n \neq w_{n_n}$ that is the nth character of x is not equal to the nth character in the nth string of our enumeration of $B$. In this way we guarantee that x is not in our enumeration of $B \therefore B$ is uncountable.
+        \end{proof}
+    \end{enumerate}
+    \item {[9 marks]} We next move to a warmup question regarding reductions.
+        \begin{enumerate}
+            \item {[2 marks]} Intuitively, what does the notation $A\leq B$ mean for problems $A$ and $B$?
+            This notation means that the ability to solve $B$ implies the ability to solve $A$.
+            \item {[2 marks]} What is a mapping reduction $A\leq_m B$ from language $A$ to language $B$? Give both a formal definition, and a brief intuitive explanation in your own words.
+            \begin{quote}
+            Language A is \emph{mapping reducible} to language $B$, written $A {\leq}_m B$, if there is a computable function $f: \Sigma^* \rightarrow \Sigma^*$, where for every $w$,
+            \begin{equation}
+            w \in A \Leftrightarrow f(w) \in B
+            \end{equation}
+			The function $f$ is called the \emph{reduction} from $A$ to $B$  \\
+			(Sipser pg. 235)
+            \end{quote}
+            Essentially, if there is a programmatic way to transform problem $A$ into one or more cases of problem $B$ then you have an example of mapping reducibility. Mapping mulitplication into a series of addition problems or alphabetizing a list of words into comparing 2 integers are examples of such mappings.
+            \item {[2 marks]} What is a computable function? Give both a formal definition, and a brief intuitive explanation in your own words. \\
+            \begin{quote}
+            A funciton $f: \Sigma^* \rightarrow \Sigma^*$ is a \emph{computable function} is some Turing machine $M$, on every input $w$, halts with just $f(w)$ on its tape. (Sipser, pg. 234)
+            \end{quote}
+            A computable function is a mapping from a string to a string which is Turing decidable.
+            \item {[3 marks]} Suppose $A\leq_m B$ for languages $A$ and $B$. Please answer each of the following with a brief explanation.
+                \begin{enumerate}
+                    \item If $B$ is decidable, is $A$ decidable? Yes because $B$ is decidable and $A$ can be mapped to $B$ $A$ must also be decidable.
+                    \item If $A$ is undecidable, is $B$ undecidable? Yes. Since $A$ reduces to $B$ if $B$ were decidable $A$ would be as well. Since we know both that $A$ reduces to $B$ and that $A$ is undecidable, it must be that $B$ is also undecidable.
+                    \item If $B$ is undecidable, is $A$ undecidable? Not necessarily. It is possible that $A$ is actually decidable by some reduction just not this one. 
+                \end{enumerate}
+
+        \end{enumerate}
+    \item {[40 marks]} Prove using reductions that the following languages are undecidable.
+
+    \begin{enumerate}
+
+
+    	\item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }L(M)=\Sigma^*}$.  
+    	\begin{proof}
+    	Assume L is decidable. 
+    	Let TM $R$ decide L. Construct TM $S$ with $R$ as a subprocess to show that it can be used to decide $A_{TM}$\\
+    	Design TM $M_x =$ on input $x$
+    	\begin{enumerate}
+    		\item Run $M$ on $w$ if $M$ accepts, accept
+    		\item Otherwise reject
+    	\end{enumerate}
+    	$S = $ "on input $<M, w>$ 
+    	\begin{enumerate}
+    		\item Construct $M_x$ as above
+    		\item Run $R$ on $<M_x>$
+    		\item if $R$ accepts accept, if $R$ rejects reject"
+    	\end{enumerate}
+    	\end{proof}
+
+
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM and }\set{000,111}\subseteq L(M)}$.
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item if $x$ has the form $0^n1^n n\geq 1$ accept. (This makes $L(M_x)$ not contain $000$ or $111$ so R will reject)
+        				\item otherwise run $M$ on input $w$ if $M$ accepts, accept.(This adds all other strings including $000$ and $111$ to $L(M_x)$"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
+
+
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings of even parity}}$. (Recall the \emph{parity} of a string $x\in\set{0,1}$ is the number of $1$'s in $x$.)
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item if $x$ has odd parity reject. (This ensures that $L(M_x)$ contains no strings with odd parity)
+        				\item otherwise run $M$ on input $w$ if $M$ accepts, accept.(This adds strings of even parity to $M_x$ only if $M$ accecpts $w$. If $M$ rejects $w$ then $L(M_x) = \emptyset$"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
+        \item {[8 marks]} $L=\set{\enc{M}\mid M\text{ is a TM that accepts }w^R\text{ whenever it accepts }w}$. Recall here that $w^R$ is the string $w$ written in reverse, i.e. $011^R=110$.
+        \begin{proof}
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$.\\
+        $S =$ "on input $<M, w>$
+        	\begin{enumerate}
+        		\item construct TM $M_x$\\
+        			$M_x =$ "on input $x$
+        				\begin{enumerate}
+        				\item simulate a PDA which detects palandromes and feed it input x. If the PDA accepts run $M$ on input $w$ if $M$ accepts, accept. (This ensures that $L(M_x)$ contains only palandromes which are their own reverse so $R$ will certainly accept.)
+        				\item otherwise reject.(This sets $L(M_x) = \emptyset$ so $R$ will reject it.)"
+        				\end{enumerate}
+        		\item Run $R$ on input $<M_x>$ accept if $R$ accepts reject otherwise."
+        	\end{enumerate}
+        \end{proof}
+        
+        \item {[8 marks]} Consider the problem of determining whether a TM M on an input $w$ ever attempts to move its head left when its head is on the left-most tape cell. Formulate this problem as a language and show that it is undecidable.\\
+        $L=\set{\enc{M}\mid M\text{ is a TM which accepts all strings which causes it to attempt to move its head off of the left side of the tape}}$
+        Assume TM $R$ decides $L$. Construct TM $S$ to decide $<M, w>$\\
+        $S =$ "on inpute $<M, w>$
+        \begin{enumerate}
+        	\item Construct TM $M_x$\\
+        		$M_x =$ "on input x
+        		\begin{enumerate}
+        			\item Run $M$ on $w$ if $M$ accepts enter a loop which moves the head left forever
+        			\item Otherwise move head right forever
+        		\end{enumerate}
+        	\item Run $R$ on $M_x$ accept if $R$ accepts.
+        \end{enumerate}
+    \end{enumerate}
+ \end{enumerate}
+\end{document}
